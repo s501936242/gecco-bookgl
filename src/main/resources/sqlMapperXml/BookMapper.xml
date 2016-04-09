@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.road.crawler.book.mapper.BookMapper" >
+
+  <resultMap id="BaseResultMap" type="com.road.crawler.book.model.Book" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="txtinfoId" property="txtinfoId" jdbcType="INTEGER" />
+    <result column="URL" property="url" jdbcType="VARCHAR" />
+    <result column="Path" property="path" jdbcType="VARCHAR" />
+    <result column="CreateDate" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="UpdateDate" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    Id, txtinfoId, URL, Path, CreateDate, UpdateDate
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from g_book_txt
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from g_book_txt
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.road.crawler.book.model.Book" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into g_book_txt (txtinfoId, URL, Path, 
+      CreateDate, UpdateDate)
+    values (#{txtinfoId,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.road.crawler.book.model.Book" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into g_book_txt
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="txtinfoId != null" >
+        txtinfoId,
+      </if>
+      <if test="url != null" >
+        URL,
+      </if>
+      <if test="path != null" >
+        Path,
+      </if>
+      <if test="createDate != null" >
+        CreateDate,
+      </if>
+      <if test="updateDate != null" >
+        UpdateDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="txtinfoId != null" >
+        #{txtinfoId,jdbcType=INTEGER},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.road.crawler.book.model.Book" >
+    update g_book_txt
+    <set >
+      <if test="txtinfoId != null" >
+        txtinfoId = #{txtinfoId,jdbcType=INTEGER},
+      </if>
+      <if test="url != null" >
+        URL = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        Path = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        CreateDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        UpdateDate = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.road.crawler.book.model.Book" >
+    update g_book_txt
+    set txtinfoId = #{txtinfoId,jdbcType=INTEGER},
+      URL = #{url,jdbcType=VARCHAR},
+      Path = #{path,jdbcType=VARCHAR},
+      CreateDate = #{createDate,jdbcType=TIMESTAMP},
+      UpdateDate = #{updateDate,jdbcType=TIMESTAMP}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
